@@ -1,8 +1,7 @@
-package com.gameodd.MysterySpheres
+package com.skyflygame.pyramidbubblepop
 
 import android.content.Context
 import android.media.MediaPlayer
-import com.skyflygame.pyramidbubblepop.R
 
 object SoundManager {
     private lateinit var musicPlayer: MediaPlayer

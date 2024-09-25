@@ -29,8 +29,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.gameodd.MysterySpheres.Prefs
-import com.gameodd.MysterySpheres.SoundManager
 import com.skyflygame.pyramidbubblepop.ui.theme.nujnoefont
 
 @Composable
@@ -146,7 +144,9 @@ fun SettingItem(
         )
 
 
-        IconButton(onClick = { onCheckedChange(!checked) },
+        IconButton(onClick = {
+            SoundManager.playSound()
+            onCheckedChange(!checked) },
             modifier = Modifier
                 .size(72.dp)
         ) {

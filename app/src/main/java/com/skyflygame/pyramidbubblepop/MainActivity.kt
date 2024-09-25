@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.gameodd.MysterySpheres.Prefs
-import com.gameodd.MysterySpheres.SoundManager
 import com.skyflygame.pyramidbubblepop.ui.theme.PyramidBubblePopTheme
 import kotlinx.coroutines.delay
 
@@ -70,10 +68,10 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("game/{level}") {
                         val level = it.arguments?.getString("level")?.toIntOrNull() ?: 1
-//                        GameScreen(onReturn = {
-//                            SoundManager.playSound()
-//                            navController.navigateUp()
-//                        })
+                        GameScreen(level) {
+                            SoundManager.playSound()
+                            navController.navigateUp()
+                        }
                     }
                     composable("levels") {
                         LevelsScreen(onReturn = {
@@ -81,6 +79,7 @@ class MainActivity : ComponentActivity() {
                             navController.navigateUp()
                         },
                             onLevelSelected = {
+                                SoundManager.playSound()
                                 navController.navigate("game/$it")
                             })
                     }
@@ -93,6 +92,21 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SoundManager.resumeMusic()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SoundManager.pauseMusic()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SoundManager.onDestroy()
     }
 }
 
@@ -116,9 +130,9 @@ fun LoadingScreen(
             color = Color(0xffB99FFF),
             trackColor = Color.White,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .height(24.dp)
+                .fillMaxWidth(0.8f)
+                .padding(4.dp)
+                .height(16.dp)
                 .align(Alignment.BottomCenter)
                 .clip(CircleShape),
         )

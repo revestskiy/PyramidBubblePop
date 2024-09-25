@@ -10,14 +10,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-
+val drawables = listOf(
+    R.drawable.lvl1,
+    R.drawable.lvl2,
+    R.drawable.lvl3,
+    R.drawable.lvl4,
+    R.drawable.lvl5,
+    R.drawable.lvl6,
+    R.drawable.lvl7,
+    R.drawable.lvl8,
+    R.drawable.lvl9,
+    R.drawable.lvl10,
+    R.drawable.lvl11,
+    R.drawable.lvl12,
+    R.drawable.lvl13,
+    R.drawable.lvl14
+)
 @Composable
 fun LevelsScreen(
     onReturn: () -> Unit,
@@ -31,6 +48,7 @@ fun LevelsScreen(
                 contentScale = ContentScale.Crop)
     ) {
         // Column for header, levels, and back button
+
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -54,10 +72,14 @@ fun LevelsScreen(
                 items(14) { index ->
                     val level = index + 1
                     Image(
-                        painter = painterResource(id = R.drawable.lvl1 + index),
+                        painter = painterResource(id = drawables[index]),
                         contentDescription = "Level $level",
                         modifier = Modifier
-                            .size(50.dp) 
+                            .size(50.dp)
+                            .shadow(
+                                elevation = 0.dp,
+                                shape = CircleShape
+                            )
                             .clickable {
                                 onLevelSelected(level)
                             }

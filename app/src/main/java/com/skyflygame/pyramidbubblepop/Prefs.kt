@@ -1,4 +1,4 @@
-package com.gameodd.MysterySpheres
+package com.skyflygame.pyramidbubblepop
 
 object Prefs {
     private lateinit var sharedPrefs: android.content.SharedPreferences

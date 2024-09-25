@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -35,10 +37,8 @@ fun MenuScreen(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
                 .paint(painter = painterResource(id = R.drawable.backgroundmenu),
                     contentScale = ContentScale.Fit)
-                .size(150.dp)
 
         ){
             Column(
@@ -54,6 +54,10 @@ fun MenuScreen(
                     contentDescription = "Start Button",
                     modifier = Modifier
                         .size(width = 250.dp, height = 80.dp)
+                        .shadow(
+                            elevation = 0.dp,
+                            shape = CircleShape
+                        )
                         .clickable {
                             onNext()
                         }
@@ -64,6 +68,10 @@ fun MenuScreen(
                     contentDescription = "Exit Button",
                     modifier = Modifier
                         .size(width = 250.dp, height = 80.dp)
+                        .shadow(
+                            elevation = 0.dp,
+                            shape = CircleShape
+                        )
                         .clickable {
 
                             onOptions()
@@ -75,6 +83,10 @@ fun MenuScreen(
                     contentDescription = "Exit Button",
                     modifier = Modifier
                         .size(width = 250.dp, height = 80.dp)
+                        .shadow(
+                            elevation = 0.dp,
+                            shape = CircleShape
+                        )
                         .clickable {
                             onExit()
                         }
