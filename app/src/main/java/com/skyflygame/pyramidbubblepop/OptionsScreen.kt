@@ -1,10 +1,6 @@
 package com.skyflygame.pyramidbubblepop
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,15 +10,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,14 +27,15 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gameodd.MysterySpheres.Prefs
+import com.gameodd.MysterySpheres.SoundManager
 import com.skyflygame.pyramidbubblepop.ui.theme.nujnoefont
 
-@Preview
 @Composable
 fun OptionsScreen(
+    onReturn: () -> Unit
 ) {
 
     Box(
@@ -53,48 +46,53 @@ fun OptionsScreen(
                 contentScale = ContentScale.Crop
             )
     ) {
-        Text(
-            text = "OPTIONS",
-            fontFamily = nujnoefont,
-            fontSize = 52.sp,
-            color = Color(0xFF572330),
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 80.dp)
-        )
 
 
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
-                .size(width = 310.dp, height = 200.dp)
+                .fillMaxWidth(0.8f)
                 .paint(
                     painter = painterResource(id = R.drawable.backgroundoptions),
                     contentScale = ContentScale.Fit
                 )
         ) {
 
-            var isMusicEnabled by remember { mutableStateOf(true) }
-            var isSoundEnabled by remember { mutableStateOf(true) }
+            var isMusicEnabled by remember { mutableStateOf(Prefs.musicVolume > 0) }
+            var isSoundEnabled by remember { mutableStateOf(Prefs.soundVolume > 0) }
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
+                Text(
+                    text = "OPTIONS",
+                    fontFamily = nujnoefont,
+                    fontSize = 44.sp,
+                    color = Color(0xFF572330),
+                    modifier = Modifier
+                        .offset(y = 40.dp)
+                )
+                Spacer(modifier = Modifier.height(90.dp))
                 Text(
                     text = "AUDIO",
                     fontFamily = nujnoefont,
-                    fontSize = 32.sp,
-                    color = Color(0xFF572330)
+                    fontSize = 24.sp,
+                    color = Color(0xFF572330),
+                    modifier = Modifier
                 )
 
                 SettingItem(
                     title = "MUSIC",
                     checked = isMusicEnabled,
-                    onCheckedChange = { isMusicEnabled = it }
+                    onCheckedChange = {
+                        isMusicEnabled = it
+                        Prefs.musicVolume = if (isMusicEnabled) 0.5f else 0f
+                        SoundManager.setMusicVolume()
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -103,16 +101,20 @@ fun OptionsScreen(
                 SettingItem(
                     title = "SOUND",
                     checked = isSoundEnabled,
-                    onCheckedChange = { isSoundEnabled = it }
+                    onCheckedChange = {
+                        isSoundEnabled = it
+                        Prefs.soundVolume = if (isSoundEnabled) 0.5f else 0f
+                        SoundManager.setSoundVolume()
+                    }
                 )
 
                 Image(painter = painterResource(id = R.drawable.okbutton),
                     contentDescription = "",
                     modifier = Modifier
+                        .padding(top = 49.dp)
                         .size(78.dp)
-                        .clickable {
-
-                        }
+                        .clickable { onReturn() },
+                    contentScale = ContentScale.Fit
                 )
             }
         }
@@ -129,7 +131,7 @@ fun SettingItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp),
+            .padding(horizontal = 48.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
 
@@ -138,20 +140,26 @@ fun SettingItem(
         Text(
             text = title,
             fontFamily = nujnoefont,
-            fontSize = 24.sp,
+            fontSize = 19.sp,
             color = Color(0xFFFFDC00),
             modifier = Modifier.weight(1f)
         )
 
 
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = Color.Red, // Цвет переключателя
-                uncheckedThumbColor = Color.Gray,
+        IconButton(onClick = { onCheckedChange(!checked) },
+            modifier = Modifier
+                .size(72.dp)
+        ) {
+            Icon(
+                painter = painterResource(
+                    id = if (checked) R.drawable.on_btn else R.drawable.off_btn
+                ),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier
+                    .size(64.dp)
             )
-        )
+        }
     }
 }
 

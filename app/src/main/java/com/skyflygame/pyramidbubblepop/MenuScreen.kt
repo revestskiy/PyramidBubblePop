@@ -16,14 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 
-@Preview
 @Composable
 fun MenuScreen(
-
+    onNext: () -> Unit,
+    onExit: () -> Unit,
+    onOptions: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -55,7 +55,7 @@ fun MenuScreen(
                     modifier = Modifier
                         .size(width = 250.dp, height = 80.dp)
                         .clickable {
-
+                            onNext()
                         }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
@@ -66,6 +66,7 @@ fun MenuScreen(
                         .size(width = 250.dp, height = 80.dp)
                         .clickable {
 
+                            onOptions()
                         }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
@@ -75,7 +76,7 @@ fun MenuScreen(
                     modifier = Modifier
                         .size(width = 250.dp, height = 80.dp)
                         .clickable {
-
+                            onExit()
                         }
                 )
             }
